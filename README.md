@@ -51,18 +51,25 @@ We will write netem (Network Emulator) rules using tc to make the connection bet
 and the client a lot worse. You can refer to the lab manual from Jed Crandall’s course for more
 information regarding tc/netem.
 You should run the rules twice inside each container, one for each interface.
+
 #on the server, for the server’s interface
 tc qdisc add dev eth0 root netem delay 100ms 50ms
+
 #on the client, for the client’s interface
 tc qdisc add dev eth0 root netem delay 100ms 50ms
+
 While developing, you might want to start with a good channel between the client and the
 server, and run the experiments after you can handle the default link between the containers.
 The following are useful as well;
 #see the current rules in effect
 tc qdisc show
+
 #deleting a rule using change is cumbersome
+
 #delete alltogether and start from scratch
+
 #mind the interface
+
 tc qdisc del dev eth0 root
 
 
