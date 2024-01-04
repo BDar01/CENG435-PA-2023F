@@ -40,7 +40,8 @@ def TCP(port: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            for i in range(8):
+            connect.settimeout(10)
+            for i in range(2):
                 file = b''
                 isHeaderReceived = False
                 accumulator = []
@@ -51,8 +52,6 @@ def TCP(port: int):
                 count = 0
                 timeSpent = 0
                 avg = 0
-
-                sleep(0.1)
 
                 while True:
                     try:
@@ -80,7 +79,7 @@ def TCP(port: int):
                             accumulator.append(data)
                             count += 1
                             
-                    except socket.timeout:
+                    except connect.timeout:
                         print("Connection timed out")
                         break
                     except Exception as e:
