@@ -78,8 +78,6 @@ def TCP(IP: str, PORT: int):
                     print(f"Error receiving data: {e}")
                     break
         
-            connect.shutdown(socket.SHUT_RDWR)
-            connect.close()
         print("Connection closed.")    
 
         # Calculating time and average
