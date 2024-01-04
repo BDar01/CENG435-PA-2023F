@@ -53,12 +53,17 @@ def TCP(port: int):
                 avg = 0
 
                 while True:
-                    try:                    
+                    try:
+                        if (isHeaderReceived and count > packet_count):
+                            break
+
+                        data = connect.recv(1024)
+                        if not data:
+                            marker[1] = time()
+                            break
+
                         if not isHeaderReceived:
                             try:
-                                data = connect.recv(1024)
-                                
-
                                 head = decompose(data, parameter)
                                 if (head):
                                     isHeaderReceived = True
@@ -70,10 +75,6 @@ def TCP(port: int):
                                 continue
                                 
                         if(isHeaderReceived):
-                            data
-                            if not data:
-                                marker[1] = time()
-                                break
                             accumulator.append(data)
                             count += 1
                             
