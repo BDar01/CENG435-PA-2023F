@@ -61,6 +61,8 @@ def receive_tcp():
                         # Check header received properly
                         head = get_header(packet)
                         if (head):
+                            flag = True
+                            
                             tmp1, tmp2, tmp3 = head
                             f_name = tmp1
                             p_no = tmp2
