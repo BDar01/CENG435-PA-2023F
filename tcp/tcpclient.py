@@ -65,13 +65,16 @@ def TCP(IP: str, PORT: int):
                                 file_name = ""
                                 packet_count = 0
                                 marker[0] = 0
+                                data = None
 
                         except Exception as e:
                             print(f"Error in decompose: {e}")
                             continue
 
-                    accumulator.append(data)
-                    count += 1
+                    if(isHeaderReceived):
+                        accumulator.append(data)
+                        count += 1
+                        
                 except socket.timeout:
                     print("Connection timed out")
                     break
