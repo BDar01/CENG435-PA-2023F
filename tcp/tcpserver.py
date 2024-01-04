@@ -8,8 +8,8 @@ def createHeader(file_name,marker,num_of_packets):
     return header + checksum + "[29,6,28,17,6,20]"
 
 def TCP(ip: str, sender: int, receiver: int):
-    file_name1 = "large-0.obj"
-    file_name2 = "small-0.obj"
+    file_name2 = "large-0.obj"
+    file_name1 = "small-0.obj"
 
     packet_length = 750  # Define the size of each packet
 
@@ -51,6 +51,7 @@ def TCP(ip: str, sender: int, receiver: int):
         for packet in packets1:
             s.send(header1.encode())
             print(counter)
+            print("Packet count: ", packet_count1)
             counter = counter + 1
             for i in range(packet_count1):
                 s.sendall(packets1[i])
@@ -67,12 +68,14 @@ def TCP(ip: str, sender: int, receiver: int):
         
             print("Data2 sent successfully")
         '''
+
+        s.close()
+
     except Exception as e:
         print(f"An error occurred: {e}")
 
     finally:
         # Close the socket
-        s.close()
         print("Connection closed")
        
     

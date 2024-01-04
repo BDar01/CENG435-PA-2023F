@@ -60,7 +60,7 @@ def TCP(IP: str, PORT: int):
                             flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
                             if (flag):
                                 isHeaderReceived = True
-                                print("Packet count: " packet_count)
+                                print("Packet count: ", packet_count)
                             else:
                                 file_name = ""
                                 packet_count = 0
@@ -95,9 +95,10 @@ def TCP(IP: str, PORT: int):
         print("Loaded all packets.")
         if file_name:
             try:
-                print("Checksum: ", md5(file).hexdigest())
                 with open(file_name, "wb") as fp:
                     fp.write(file)
+                with open(file_name, "rb") as fp:
+                    print("Checksum: ", md5(fp).hexdigest())
             except FileNotFoundError:
                 print(f"Error: File not found - {file_name}")
             except Exception as e:
