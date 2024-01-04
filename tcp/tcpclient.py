@@ -70,11 +70,10 @@ def TCP(IP: str, PORT: int):
                         except Exception as e:
                             print(f"Error in decompose: {e}")
                             continue
-
+                            
                     if(isHeaderReceived):
                         accumulator.append(data)
                         count += 1
-                        
                 except socket.timeout:
                     print("Connection timed out")
                     break
@@ -93,11 +92,13 @@ def TCP(IP: str, PORT: int):
 
         print("File name: ", file_name)
         # Merging data and writing to file
-        '''
+        
         for obj in accumulator:
             file += obj
         '''
         file = b"".join(accumulator)
+        '''
+        
         print("Loaded all packets.")
         if file_name:
             try:
