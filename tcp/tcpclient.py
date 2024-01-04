@@ -29,6 +29,15 @@ def decompose(stream, p):
         #print(f"Decompose error: {e}")  # Optionally print the exception
         return False
 
+def recvall(sock, count):
+    data = b""
+    while count:
+        packet = sock.recv(count)
+        if not packet:
+            raise EOFError("Socket closed unexpectedly")
+        data += packet
+        count -= len(packet)
+    return data
 
 
 def TCP(port: int):
@@ -40,7 +49,6 @@ def TCP(port: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            connect.settimeout(10)
             for i in range(2):
                 file = b''
                 isHeaderReceived = False
@@ -54,30 +62,32 @@ def TCP(port: int):
                 avg = 0
 
                 while True:
-                    try:
-                        if (isHeaderReceived and count > packet_count):
-                            break
-
-                        data = connect.recv(1024)
-                        if not data:
-                            marker[1] = time()
-                            break
+                    try:             
+                        if isHeaderReceived:
+                            data = recvall(connect, 750)
+                            if not data:
+                                marker[1] = time()
+                                break
+                            accumulator.append(data)
+                            count += 1
 
                         if not isHeaderReceived:
                             try:
+                                data = connect.recv(1024)
+
                                 head = decompose(data, parameter)
+
                                 if (head):
                                     isHeaderReceived = True
+                                    
                                     file_name, marker[0], packet_count, data = head
+                                    accumulator.append(data)
+                                    count+=1
                                     #print("Packet count: ", packet_count)
 
                             except Exception as e:
                                 #print(f"Error in decompose: {e}")
                                 continue
-                                
-                        if(isHeaderReceived):
-                            accumulator.append(data)
-                            count += 1
                             
                     except connect.timeout:
                         print("Connection timed out")
@@ -115,7 +125,6 @@ def TCP(port: int):
         
         print("Connection closed.")    
 
-        
 TCP(65429)
 
 """ def TCP(IP:str,PORT:int):
