@@ -46,6 +46,7 @@ def TCP(IP: str, PORT: int):
                 file_name = ""
                 packet_count = 0
                 count = 0
+                data = None
                 while True:
                     try:
                         if (isHeaderReceived and count > packet_count):

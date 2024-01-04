@@ -37,7 +37,7 @@ def TCP(ip: str, sender: int, receiver: int):
     packets2 = []
     # Split data into packets
     for i in range(packet_count2):
-        packets2.append(data1[i * packet_length: (i + 1) * packet_length])
+        packets2.append(data2[i * packet_length: (i + 1) * packet_length])
     header2 = createHeader(file_name2, time(), packet_count1)
 
     # Create a socket
