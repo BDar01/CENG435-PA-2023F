@@ -5,11 +5,11 @@ from time import time
 
 def decompose(stream, p):
     try:
-        headerList = data.split(p.encode())
-        file_name = headerList[0].decode()
-        marker = headerList[1].decode()
-        packet_count = headerList[2].decode()
-        checksum = headerList[3].decode()
+        streamList = stream.split(p.encode())
+        file_name = streamList[0].decode()
+        marker = streamList[1].decode()
+        packet_count = streamList[2].decode()
+        checksum = streamList[3].decode()
     
         partToHash = file_name + p + marker + p + packet_count + p
         hashed_check = sha256(partToHash.encode()).hexdigest()
@@ -17,7 +17,7 @@ def decompose(stream, p):
         if checksum == hashed_check:
             marker = float(marker)
             packet_count = int(packet_count)
-            payload = headerList[4]
+            payload = streamList[4]
             return True, file_name, marker, packet_count, payload 
         else:
             return False, None, None, None, None  # Return None for each expected value

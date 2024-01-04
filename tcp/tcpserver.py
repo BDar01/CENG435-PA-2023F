@@ -24,12 +24,12 @@ def TCP(ip: str, sender: int, receiver: int):
 
     # Calculate number of packets
     packet_count1 = len(data1) // packet_length + (1 if len(data1) % packet_length else 0)
-    packet_count2 = len(data2) // packet_length + (1 if len(data1) % packet_length else 0)
+    packet_count2 = len(data2) // packet_length + (1 if len(data2) % packet_length else 0)
 
     # Split data into packets
     packets1 = [data1[i * packet_length:(i + 1) * packet_length] for i in range(packet_count1)]
     header1 = createHeader(file_name1, time(), packet_count1)
-    packets2 = [data1[i * packet_length:(i + 1) * packet_length] for i in range(packet_count2)]
+    packets2 = [data2[i * packet_length:(i + 1) * packet_length] for i in range(packet_count2)]
     header2 = createHeader(file_name2, time(), packet_count2)
 
     # Create a socket
