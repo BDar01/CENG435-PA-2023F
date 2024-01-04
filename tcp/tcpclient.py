@@ -5,8 +5,8 @@ from time import time
 
 def decompose(stream, p):
     try:
+        streamList = stream.split(p.encode())
         if (len(streamList) >= 4 and streamList[4:]):
-            streamList = stream.split(p.encode())
             file_name = streamList[0].decode()
             marker = streamList[1].decode()
             packet_count = streamList[2].decode()
