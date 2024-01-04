@@ -1,6 +1,6 @@
 import socket
 from hashlib import sha256
-
+from time import time
 
 def createHeader(file_name,marker,num_of_packets,p):
     header = file_name + "[29,6,28,17,6,20]" + str(marker) + "[29,6,28,17,6,20]" + str(num_of_packets) + "[29,6,28,17,6,20]"
