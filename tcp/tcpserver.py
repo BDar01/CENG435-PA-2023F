@@ -47,35 +47,29 @@ def TCP(ip: str, sender: int, receiver: int):
 
         print("check2")
 
-        # Send data packets
-        for packet in packets1:
-            s.send(header1.encode())
-            print(counter)
-            print("Packet count: ", packet_count1)
-            counter = counter + 1
-            for i in range(packet_count1):
-                s.sendall(packets1[i])
+        # Send header for file_name1
+        s.send(header1.encode())
+        print("Header sent successfully")
+
+        # Send data packets for file_name1
+        for i in range(packet_count1):
+            s.sendall(packets1[i])
 
         print("Data1 sent successfully")
         counter = 0
-        '''
-        for packet in packets2:
-            s.send(header2.encode())
-            print(counter)
-            counter = counter + 1
-            for i in range(packet_count2):
-                s.sendall(packets2[i])
-        
-            print("Data2 sent successfully")
-        '''
 
-        s.close()
+        # s.send(header2.encode())
+        # print("Header sent successfully for file_name2")
+        # for i in range(packet_count2):
+        #     s.sendall(packets2[i])
+        #
+        # print("Data2 sent successfully")
 
     except Exception as e:
         print(f"An error occurred: {e}")
-
     finally:
         # Close the socket
+        s.close()
         print("Connection closed")
        
     
