@@ -38,7 +38,10 @@ def send_file(sock, f_name):
     # Sleep to give time to server before next send_file
     sleep(0.1)
 
-def send_tcp(ip, source, dest, index):
+def send_tcp(index):
+    ip = "172.17.0.2"
+    source = 65001
+    dest = 65002
 
     # List of file names
     file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
@@ -64,5 +67,5 @@ if __name__ == "__main__":
     # For 20 files:
     for i in range(10):
         # Send 1 large, then 1 small object
-        send_tcp("172.17.0.3", 65001, 65002, i)
+        send_tcp(i)
         sleep(0.5)
