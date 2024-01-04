@@ -1,28 +1,30 @@
 import socket
 from hashlib import sha256
-import time
+import time.time
 
 
 def decompose(stream, p):
     try:
-        streamList = stream.split(p.encode())
-        file_name = streamList[0].decode()
-        marker = streamList[1].decode()
-        packet_count = streamList[2].decode()
-        checksum = streamList[3].decode()
+        headerList = data.split(p.encode())
+        file_name = headerList[0].decode()
+        marker = headerList[1].decode()
+        packet_count = headerList[2].decode()
+        checksum = headerList[3].decode()
     
-        partToBeHashed = file_name + p + marker + p + packet_count + p
-        hashed_check = sha256(partToBeHashed.encode()).hexdigest()
+        partToHash = file_name + p + marker + p + packet_count + p
+        hashed_check = sha256(partToHash.encode()).hexdigest()
 
         if checksum == hashed_check:
-            payload = streamList[4]
-            return file_name, marker, packet_count, payload
+            marker = float(marker)
+            packet_count = int(packet_count)
+            payload = headerList[4]
+            return True, file_name, marker, packet_count, payload 
         else:
-            return None, None, None, None  # Return None for each expected value
+            return False, None, None, None, None  # Return None for each expected value
 
     except Exception as e:
         print(f"Decompose error: {e}")  # Optionally print the exception
-        return None, None, None, None  # Return None for each expected value
+        return False, None, None, None, None  # Return None for each expected value
 
 
 
@@ -51,8 +53,14 @@ def TCP(IP: str, PORT: int):
 
                     if not isHeaderReceived:
                         try:
-                            file_name, marker[0], packet_count, data = decompose(data, parameter)
-                            isHeaderReceived = True
+                            flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
+                            if (flag):
+                                isHeaderReceived = True
+                            else:
+                                file_name = ""
+                                packet_count = 0
+                                marker[0] = 0
+
                         except Exception as e:
                             print(f"Error in decompose: {e}")
                             continue
@@ -65,31 +73,29 @@ def TCP(IP: str, PORT: int):
                     print(f"Error receiving data: {e}")
                     break
 
-            connect.shutdown(socket.SHUT_RDWR)
-            connect.close()
-            print("Connection closed.")
+        print("Connection closed.")
 
-            # Calculating time and average
-            if marker[1] and marker[0]:
-                timeSpent = (marker[1] - marker[0]) * 1000
-                avg = timeSpent / int(packet_count) if packet_count else 0
-                print(f"Average Time per Packet: {avg} ms")
-                print(f"Total Transmission Time: {timeSpent} ms")
+        # Calculating time and average
+        if marker[1] and marker[0]:
+            timeSpent = (marker[1] - marker[0]) * 1000
+            avg = timeSpent / int(packet_count) if packet_count else 0
+            print(f"Average Time per Packet: {avg} ms")
+            print(f"Total Transmission Time: {timeSpent} ms")
 
-            # Merging data and writing to file
-            for obj in accumulator:
-                file += obj
+        # Merging data and writing to file
+        for obj in accumulator:
+            file += obj
 
-            if file_name:
-                try:
-                    with open(file_name, "wb") as fp:
-                        fp.write(file)
-                except FileNotFoundError:
-                    print(f"Error: File not found - {file_name}")
-                except Exception as e:
-                    print(f"Error writing file: {e}")
-            else:
-                print("Error: File name is None")
+        if file_name:
+            try:
+                with open(file_name, "wb") as fp:
+                    fp.write(file)
+            except FileNotFoundError:
+                print(f"Error: File not found - {file_name}")
+            except Exception as e:
+                print(f"Error writing file: {e}")
+        else:
+            print("Error: File name is None")
 
 TCP("172.17.0.2", 65429)
 

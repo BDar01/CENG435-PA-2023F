@@ -3,22 +3,9 @@ from hashlib import sha256
 
 
 def createHeader(file_name,marker,num_of_packets,p):
-    header = file_name + str(p) + str(marker) + str(p) + str(num_of_packets) + str(p)
+    header = file_name + "[29,6,28,17,6,20]" + str(marker) + "[29,6,28,17,6,20]" + str(num_of_packets) + "[29,6,28,17,6,20]"
     checksum = sha256(header.encode()).hexdigest()
-    return header + checksum + p
-
-
-def split_data(data,packet_count):
-    """
-    :return: list of data split according to the packet sizes
-    """
-    data_packets = []
-    for i in range(int(packet_count)):
-        start_index = i 
-        end_index = (i + 1) * 750
-        data_packet = data[start_index:end_index]
-        data_packets.append(data_packet)
-    return data_packets
+    return header + checksum + "[29,6,28,17,6,20]"
 
 def TCP(ip: str, sender: int, receiver: int):
     file_name1 = "../../objects/large-0.obj"
@@ -41,7 +28,9 @@ def TCP(ip: str, sender: int, receiver: int):
 
     # Split data into packets
     packets1 = [data1[i * packet_length:(i + 1) * packet_length] for i in range(packet_count1)]
+    header1 = createHeader(file_name1, time(), packet_count1)
     packets2 = [data1[i * packet_length:(i + 1) * packet_length] for i in range(packet_count2)]
+    header2 = createHeader(file_name2, time(), packet_count2)
 
     # Create a socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -59,20 +48,24 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send data packets
         for packet in packets1:
+            s.send(header1.encode())
             print(counter)
             counter = counter + 1
-            s.sendall(packet)
+            for i in range(packet_count1):
+                s.sendall(packets1[i])
 
         print("Data1 sent successfully")
         counter = 0
-
+        '''
         for packet in packets2:
-            print("counter")
-            counter = counter+1
-            s.sendall(packet)
+            s.send(header2.encode())
+            print(counter)
+            counter = counter + 1
+            for i in range(packet_count2):
+                s.sendall(packets2[i])
         
             print("Data2 sent successfully")
-
+        '''
     except Exception as e:
         print(f"An error occurred: {e}")
 
