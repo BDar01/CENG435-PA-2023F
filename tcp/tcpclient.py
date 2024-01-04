@@ -105,7 +105,7 @@ def TCP(IP: str, PORT: int):
                 with open(file_name, "wb") as fp:
                     fp.write(file)
                 #with open(file_name, "rb") as fp:
-                    print("Checksum: ", sha256(file).hexdigest())
+                    print("Checksum: ", md5(file).hexdigest())
             except FileNotFoundError:
                 print(f"Error: File not found - {file_name}")
             except Exception as e:
@@ -113,7 +113,7 @@ def TCP(IP: str, PORT: int):
         else:
             print("Error: File name is None")
 
-TCP("172.17.0.2", 65429)
+TCP("172.17.0.2", 65000)
 
 """ def TCP(IP:str,PORT:int):
     file = b''
