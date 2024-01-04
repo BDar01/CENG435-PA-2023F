@@ -36,7 +36,7 @@ def TCP(IP: str, PORT: int):
     parameter = "[29,6,28,17,6,20]"
     file_name = ""
     packet_count = 0
-    count = 0
+    count = -1
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as S1:
         S1.bind(("", PORT))
@@ -60,6 +60,7 @@ def TCP(IP: str, PORT: int):
                             flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
                             if (flag):
                                 isHeaderReceived = True
+                                count = 0
                             else:
                                 file_name = ""
                                 packet_count = 0
