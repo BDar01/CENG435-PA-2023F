@@ -23,7 +23,7 @@ def decompose(stream, p):
             return False, None, None, None, None  # Return None for each expected value
 
     except Exception as e:
-        print(f"Decompose error: {e}")  # Optionally print the exception
+        #print(f"Decompose error: {e}")  # Optionally print the exception
         return False, None, None, None, None  # Return None for each expected value
 
 
@@ -49,13 +49,14 @@ def TCP(IP: str, PORT: int):
                 data = None
                 timeSpent = 0
                 avg = 0
+                flag = False
 
                 while True:
                     try:
                         if (isHeaderReceived and count > packet_count):
                             break
 
-                        data = connect.recv(1204)
+                        data = connect.recv(1024)
                         if not data:
                             marker[1] = time()
                             break
@@ -73,7 +74,7 @@ def TCP(IP: str, PORT: int):
                                     data = None
 
                             except Exception as e:
-                                print(f"Error in decompose: {e}")
+                                #print(f"Error in decompose: {e}")
                                 continue
                                 
                         if(isHeaderReceived):

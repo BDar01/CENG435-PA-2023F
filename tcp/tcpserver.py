@@ -334,6 +334,7 @@ def TCP(ip: str, sender: int, receiver: int):
         packets20.append(data20[i * packet_length: (i + 1) * packet_length])
     header20 = createHeader(file_name20, time(), packet_count20)
 
+
     # Create a socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -344,7 +345,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name1
         s.send(header1.encode())
-        print("Header1 sent successfully")
+        print(f"Header1 length {len(header1.encode())} sent successfully")
 
         # Send data packets for file_name1
         print("Packet no:", packet_count1)
@@ -357,7 +358,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name2
         s.send(header2.encode())
-        print("Header2 sent successfully")
+        print(f"Header2 length {len(header2.encode())} sent successfully")
 
         # Send data packets for file_name2
         print("Packet no:", packet_count2)
@@ -370,7 +371,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name3
         s.send(header3.encode())
-        print("Header1 sent successfully")
+        print(f"Header3 length {len(header3.encode())} sent successfully")
 
         # Send data packets for file_name3
         print("Packet no:", packet_count3)
@@ -383,7 +384,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name4
         s.send(header4.encode())
-        print("Header2 sent successfully")
+        print(f"Header4 length {len(header4.encode())} sent successfully")
 
         # Send data packets for file_name4
         print("Packet no:", packet_count4)
@@ -396,7 +397,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name5
         s.send(header5.encode())
-        print("Header5 sent successfully")
+        print(f"Header5 length {len(header5.encode())} sent successfully")
 
         # Send data packets for file_name5
         print("Packet no:", packet_count5)
@@ -409,7 +410,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name6
         s.send(header6.encode())
-        print("Header6 sent successfully")
+        print(f"Header6 length {len(header6.encode())} sent successfully")
 
         # Send data packets for file_name6
         print("Packet no:", packet_count6)
@@ -422,7 +423,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name7
         s.send(header7.encode())
-        print("Header7 sent successfully")
+        print(f"Header7 length {len(header7.encode())} sent successfully")
 
         # Send data packets for file_name7
         print("Packet no:", packet_count7)
@@ -435,7 +436,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name8
         s.send(header8.encode())
-        print("Header8 sent successfully")
+        print(f"Header8 length {len(header8.encode())} sent successfully")
 
         # Send data packets for file_name8
         print("Packet no:", packet_count8)
@@ -448,7 +449,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name9
         s.send(header9.encode())
-        print("Header9 sent successfully")
+        print(f"Header9 length {len(header9.encode())} sent successfully")
 
         # Send data packets for file_name9
         print("Packet no:", packet_count9)
@@ -461,7 +462,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name10
         s.send(header10.encode())
-        print("Header10 sent successfully")
+        print(f"Header10 length {len(header10.encode())} sent successfully")
 
         # Send data packets for file_name10
         print("Packet no:", packet_count10)
@@ -474,7 +475,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name11
         s.send(header11.encode())
-        print("Header11 sent successfully")
+        print(f"Header11 length {len(header11.encode())} sent successfully")
 
         # Send data packets for file_name11
         print("Packet no:", packet_count11)
@@ -487,7 +488,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name12
         s.send(header12.encode())
-        print("Header12 sent successfully")
+        print(f"Header12 length {len(header12.encode())} sent successfully")
 
         # Send data packets for file_name12
         print("Packet no:", packet_count12)
@@ -500,7 +501,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name13
         s.send(header13.encode())
-        print("Header13 sent successfully")
+        print(f"Header13 length {len(header13.encode())} sent successfully")
 
         # Send data packets for file_name13
         print("Packet no:", packet_count13)
@@ -513,7 +514,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name14
         s.send(header14.encode())
-        print("Header14 sent successfully")
+        print(f"Header14 length {len(header14.encode())} sent successfully")
 
         # Send data packets for file_name14
         print("Packet no:", packet_count14)
@@ -526,7 +527,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name15
         s.send(header15.encode())
-        print("Header15 sent successfully")
+        print(f"Header15 length {len(header15.encode())} sent successfully")
 
         # Send data packets for file_name15
         print("Packet no:", packet_count15)
@@ -539,7 +540,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name16
         s.send(header16.encode())
-        print("Header16 sent successfully")
+        print(f"Header16 length {len(header16.encode())} sent successfully")
 
         # Send data packets for file_name16
         print("Packet no:", packet_count16)
@@ -552,7 +553,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name17
         s.send(header17.encode())
-        print("Header17 sent successfully")
+        print(f"Header17 length {len(header17.encode())} sent successfully")
 
         # Send data packets for file_name17
         print("Packet no:", packet_count17)
@@ -565,7 +566,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name18
         s.send(header18.encode())
-        print("Header18 sent successfully")
+        print(f"Header18 length {len(header18.encode())} sent successfully")
 
         # Send data packets for file_name18
         print("Packet no:", packet_count18)
@@ -578,7 +579,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name19
         s.send(header19.encode())
-        print("Header19 sent successfully")
+        print(f"Header19 length {len(header19.encode())} sent successfully")
 
         # Send data packets for file_name19
         print("Packet no:", packet_count19)
@@ -591,7 +592,7 @@ def TCP(ip: str, sender: int, receiver: int):
 
         # Send header for file_name20
         s.send(header20.encode())
-        print("Header20 sent successfully")
+        print(f"Header20 length {len(header20.encode())} sent successfully")
 
         # Send data packets for file_name20
         print("Packet no:", packet_count20)
