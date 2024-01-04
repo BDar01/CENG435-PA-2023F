@@ -100,8 +100,8 @@ def TCP(IP: str, PORT: int):
             try:
                 with open(file_name, "wb") as fp:
                     fp.write(file)
-                with open(file_name, "rb") as fp:
-                    print("Checksum: ", md5(fp).hexdigest())
+                #with open(file_name, "rb") as fp:
+                    print("Checksum: ", md5(file).hexdigest())
             except FileNotFoundError:
                 print(f"Error: File not found - {file_name}")
             except Exception as e:
