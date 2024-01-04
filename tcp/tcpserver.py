@@ -1,6 +1,6 @@
 import socket
 from hashlib import sha256, md5
-from time import time
+from time import time, sleep
 from math import ceil
 
 def createHeader(file_name,marker,num_of_packets):
@@ -64,6 +64,8 @@ def TCP(ip: str, sender: int, receiver: int):
             s.sendall(packets1[i])
 
         print("Data1 sent successfully")
+
+        sleep(0.1)
 
         # Send header for file_name1
         s.send(header2.encode())

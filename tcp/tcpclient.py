@@ -82,35 +82,34 @@ def TCP(IP: str, PORT: int):
                         print(f"Error receiving data: {e}")
                         break
                 
-            # Calculating time and average
-            if marker[1] and marker[0]:
-                timeSpent = (marker[1] - marker[0]) * 1000
-                avg = timeSpent / int(packet_count) if packet_count else 0
-                print(f"Average Time per Packet: {avg} ms")
-                print(f"Total Transmission Time: {timeSpent} ms")
+                # Calculating time and average
+                if marker[1] and marker[0]:
+                    timeSpent = (marker[1] - marker[0]) * 1000
+                    avg = timeSpent / int(packet_count) if packet_count else 0
+                    print(f"Average Time per Packet: {avg} ms")
+                    print(f"Total Transmission Time: {timeSpent} ms")
 
-            print("File name: ", file_name)
-            # Merging data and writing to file
-            '''
-            for obj in accumulator:
-                file += obj
-            '''
-            file = b"".join(accumulator)
-            
+                print("File name: ", file_name)
+                # Merging data and writing to file
+                '''
+                for obj in accumulator:
+                    file += obj
+                '''
+                file = b"".join(accumulator)
+                
 
-            print("Loaded all packets.")
-            if file_name:
-                try:
-                    with open(file_name, "wb") as fp:
-                        fp.write(file)
-                    #with open(file_name, "rb") as fp:
-                        print("Checksum: ", md5(file).hexdigest())
-                except FileNotFoundError:
-                    print(f"Error: File not found - {file_name}")
-                except Exception as e:
-                    print(f"Error writing file: {e}")
-            else:
-                print("Error: File name is None")
+                print("Loaded all packets.")
+                if file_name:
+                    try:
+                        with open(file_name, "wb") as fp:
+                            fp.write(file)
+                            print("Checksum: ", md5(file).hexdigest())
+                    except FileNotFoundError:
+                        print(f"Error: File not found - {file_name}")
+                    except Exception as e:
+                        print(f"Error writing file: {e}")
+                else:
+                    print("Error: File name is None")
         
         print("Connection closed.")    
 
