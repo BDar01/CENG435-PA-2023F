@@ -33,7 +33,7 @@ def send_file(s, file_name):
         s.sendall(packets[i])
 
     print(f"Data for {file_name} sent successfully")
-    sleep(0.1)
+    #sleep(0.1)
 
 def TCP(ip: str, sender: int, receiver: int):
     '''
@@ -364,7 +364,7 @@ def TCP(ip: str, sender: int, receiver: int):
     '''
 
     # List of file names
-    file_names = ["large-0.obj", "small-0.obj"]# "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
+    file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj"]#, "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
 
     # Create a socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

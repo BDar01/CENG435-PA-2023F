@@ -1,6 +1,6 @@
 import socket
 from hashlib import sha256, md5
-from time import time
+from time import time, sleep
 
 
 def decompose(stream, p):
@@ -31,16 +31,16 @@ def decompose(stream, p):
 
 
 
-def TCP(IP: str, PORT: int):
+def TCP(port: int):
     total_time = 0
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as S1:
-        S1.bind(("", PORT))
-        S1.listen()
+        S1.bind(("", port))
+        S1.listen(1)
         print("Waiting for connection...")
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            for i in range(2):
+            for i in range(8):
                 file = b''
                 isHeaderReceived = False
                 accumulator = []
@@ -49,9 +49,10 @@ def TCP(IP: str, PORT: int):
                 file_name = ""
                 packet_count = 0
                 count = 0
-                data = None
                 timeSpent = 0
                 avg = 0
+
+                sleep(0.1)
 
                 while True:
                     try:
@@ -116,7 +117,7 @@ def TCP(IP: str, PORT: int):
         print("Connection closed.")    
 
         
-TCP("172.17.0.2", 65429)
+TCP(65429)
 
 """ def TCP(IP:str,PORT:int):
     file = b''
