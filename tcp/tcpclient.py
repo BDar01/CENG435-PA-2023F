@@ -1,164 +1,89 @@
 import socket
-from hashlib import sha256, md5
-from time import time, sleep
+from hashlib import md5
 
 
-def decompose(stream, p):
-    try:
-        streamList = stream.split(p.encode())
-        if (len(streamList) >= 4 and streamList[4:]):
-            file_name = streamList[0].decode()
-            marker = streamList[1].decode()
-            packet_count = streamList[2].decode()
-            checksum = streamList[3].decode()
-        
-            partToHash = file_name + p + marker + p + packet_count + p
-            hashed_check = md5(partToHash.encode()).hexdigest()
+def get_header(p):
+    # Use splitter value of sender to get header values
+    splitter = "[3-20-1-4-88-9-10]"
+    header = p.split(splitter.encode())
 
-            if checksum == hashed_check:
-                marker = float(marker)
-                packet_count = int(packet_count)
-                payload = streamList[4]
-                return file_name, marker, packet_count, payload 
-            else:
-                return False
+    # Check header format is correct
+    if (len(header) >= 4 and header[4:]):
+        f_name = header[0].decode()
+        p_no = header[1].decode()
+        t = header[2].decode()
+        c = header[3].decode()
+
+        # Calculate checksum of header
+        check = f_name + splitter + p_no + splitter + p_no + splitter
+        hash = md5(check.encode()).hexdigest()
+
+        # Compare calculated checksum with one sent in header
+        if (c == hash):
+            p_no = int(p_no)
+            d = header[4]
+            return True, f_name, p_no, d
         else:
-                return False
+            return False
+    else:
+            return False
 
-    except Exception as e:
-        #print(f"Decompose error: {e}")  # Optionally print the exception
-        return False
+def receive_tcp():
+    # Create and initalize server socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(("", 65002))
+    sock.listen(1)
 
+    # For all 20 objects
+    for n in range(10):
+        # Listen for TCP connection to accept
+        conn, _ = sock.accept()
+        # Receive 2 objects (large then small) at a time
+        for i in range(2):
+            f = b''
+            flag = False
+            d = []
+            f_name = ""
+            p_no = 0
+            p_count = 0
 
-
-def TCP(port: int):
-    total_time = 0
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as S1:
-        S1.bind(("", port))
-        S1.listen(1)
-        print("Waiting for connection...")
-        connect, addr = S1.accept()
-        with connect:
-            print(f"Connected to {addr}")
-            for i in range(2):
-                file = b''
-                isHeaderReceived = False
-                accumulator = []
-                marker = [0, 0]
-                parameter = "[29,6,28,17,6,20]"
-                file_name = ""
-                packet_count = 0
-                count = 0
-                timeSpent = 0
-                avg = 0
-
-                while True:
-                    try:
-                        if (isHeaderReceived and count > packet_count):
-                            break
-
-                        data = connect.recv(1024)
-                        if not data:
-                            marker[1] = time()
-                            break
-
-                        if not isHeaderReceived:
-                            try:
-                                head = decompose(data, parameter)
-                                if (head):
-                                    isHeaderReceived = True
-                                    file_name, marker[0], packet_count, data = head
-                                    #print("Packet count: ", packet_count)
-
-                            except Exception as e:
-                                #print(f"Error in decompose: {e}")
-                                continue
-                                
-                        if(isHeaderReceived):
-                            accumulator.append(data)
-                            count += 1
-                            
-                    except connect.timeout:
-                        print("Connection timed out")
-                        break
-                    except Exception as e:
-                        print(f"Error receiving data: {e}")
-                        break
+            while True:
+                # Break if all packets received
+                if (flag and p_count > p_no):
+                    break
                 
-                # Calculating time and average
-                if marker[1] and marker[0]:
-                    timeSpent = (marker[1] - marker[0]) * 1000
-                    total_time += timeSpent
-                    avg = timeSpent / int(packet_count) if packet_count else 0
-                    print(f"Average Time for Packet {i}: {avg} ms")
-                    print(f"Transmission Time {i}: {timeSpent} ms")
+                # Receive packet on socket
+                packet = conn.recv(1024)
+                
+                # If data received
+                if packet:
+                    if (not flag):
+                        # Check header received properly
+                        head, tmp1, tmp2, tmp3 = get_header(packet)
+                        if (head):
+                            flag = True
+                            f_name = tmp1
+                            p_no = tmp2
+                            packet = tmp3
 
-                print("File name: ", file_name)
-                # Merging data and writing to file
-                '''
-                for obj in accumulator:
-                    file += obj
-                '''
-                file = b"".join(accumulator)                
-
-                #print("Loaded all packets.")
-                if file_name:
-                    try:
-                        print(f"Checksum {i}: ", md5(file).hexdigest())
-                    except FileNotFoundError:
-                        print(f"Error: File not found - {file_name}")
-                    except Exception as e:
-                        print(f"Error writing file: {e}")
+                    # Store packets of file
+                    if (flag):
+                        d.append(packet)
+                        p_count += 1
                 else:
-                    print("Error: File name is None")
+                    break
+
+            f = b"".join(d)                
+            
+            # Calculate checksum of received file
+            if f_name:
+                print(f"Checksum {f_name}: ", md5(f).hexdigest())
         
-        print("Connection closed.")    
+        # Close connection socket
+        conn.close()
 
-        
-TCP(65429)
+    # Close server socket
+    sock.close()
 
-""" def TCP(IP:str,PORT:int):
-    file = b''
-    isItHeader = false
-    accumulator = []
-    marker = [0,0]
-    parameter = [29,6,28,17,6,20]
-    S1 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-
-    try:
-        S1.bind(("",PORT))
-        S1.listen()
-
-        connect,addr = S1.accept()
-
-        while(True):
-            data = connect.recv(1204)
-            if(!data)
-                marker[1] = time()
-                return
-            if(!isItHeader)
-                try:
-                   file_name,marker[0],packet_count,data = decompose(data,parameter)
-                   isItHeader = true
-                except Exception:
-                    pass
-            accumulator.append(data)
-        
-        connect.close()
-    
-        timeSpent = (marker[1] - marker[0])*1000
-
-        if(packet_count != 0):
-            avg = timeSpent/packet_count
-        else:
-            avg = 0
-
-        for obj in accumulator:
-            file += obj
-
-        fp = open(file_name,"wb")
-        fp.write(file)
-        fp.close()
-        
-
-TCP(172.17.0.3,) """
+if __name__ == '__main__':        
+    receive_tcp()
