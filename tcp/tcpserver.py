@@ -1,49 +1,85 @@
 import socket
-import hashlib
+from hashlib import sha256
 
-HOST = ""  # Standard loopback interface address (localhost)
-PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 
-def receive_file(connection):
-    # Receive fixed-width string (e.g., 10 characters) for file size
-    file_size_str = connection.recv(10).decode().rstrip()
+def createHeader(file_name,marker,num_of_packets,p):
+    header = file_name + str(p) + str(marker) + str(p) + str(num_of_packets) + str(p)
+    checksum = sha256(header.encode()).hexdigest()
+    return header + checksum + p
 
-    # Extract numeric characters from the received string
-    file_size_digits = ''.join(filter(str.isdigit, file_size_str))
+
+def split_data(data,packet_count):
+    """
+    :return: list of data split according to the packet sizes
+    """
+    data_packets = []
+    for i in range(int(packet_count)):
+        start_index = i 
+        end_index = (i + 1) * 750
+        data_packet = data[start_index:end_index]
+        data_packets.append(data_packet)
+    return data_packets
+
+def TCP(ip: str, sender: int, receiver: int):
+    file_name1 = "../../objects/large-0.obj"
+    file_name2 = "../../objects/small-0.obj"
+
+    packet_length = 750  # Define the size of each packet
+
+    # Open and read file data
+    fp1 = open(file_name1, "rb")
+    data1 = fp1.read()
+    fp1.close()  # Close the file after reading
+
+    fp2 = open(file_name2,"rb")
+    data2 = fp2.read()
+    fp2.close()
+
+    # Calculate number of packets
+    packet_count1 = len(data1) // packet_length + (1 if len(data1) % packet_length else 0)
+    packet_count2 = len(data2) // packet_length + (1 if len(data1) % packet_length else 0)
+
+    # Split data into packets
+    packets1 = [data1[i * packet_length:(i + 1) * packet_length] for i in range(packet_count1)]
+    packets2 = [data1[i * packet_length:(i + 1) * packet_length] for i in range(packet_count2)]
+
+    # Create a socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    counter = 0
+
+    print("check")
 
     try:
-        file_size = int(file_size_digits)
-    except ValueError:
-        print(f"Invalid file size: {file_size_str}")
-        return
+        # Bind and connect the socket
+        s.bind(('0.0.0.0', sender))
+        s.connect((ip, receiver))
 
-    received_data = b""
-    while len(received_data) < file_size:
-        data = connection.recv(1024)
-        if not data:
-            break
-        received_data += data
+        print("check2")
 
-    # Generate a unique filename
-    unique_filename = f'received_file_{hashlib.md5(received_data).hexdigest()}.obj'
+        # Send data packets
+        for packet in packets1:
+            print(counter)
+            counter = counter + 1
+            s.sendall(packet)
 
-    with open(unique_filename, 'wb') as file:
-        file.write(received_data)
+        print("Data1 sent successfully")
+        counter = 0
 
-    print(f"File '{unique_filename}' received. Size: {file_size} bytes")
+        for packet in packets2:
+            print("counter")
+            counter = counter+1
+            s.sendall(packet)
+        
+            print("Data2 sent successfully")
 
-if __name__ == "__main__":
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, PORT))
-        s.listen(1)
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-        print(f"Server listening on {HOST}:{PORT}")
-
-        conn, addr = s.accept()
-
-        with conn:
-            print(f"Connection from {addr}")
-
-            # Receive multiple files
-            for _ in range(2):  # Assuming 2 files are being sent
-                receive_file(conn)
+    finally:
+        # Close the socket
+        s.close()
+        print("Connection closed")
+       
+    
+TCP("172.17.0.3", 65428, 65429)
