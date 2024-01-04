@@ -12,7 +12,7 @@ def decompose(stream, p):
         checksum = streamList[3].decode()
     
         partToHash = file_name + p + marker + p + packet_count + p
-        hashed_check = sha256(partToHash.encode()).hexdigest()
+        hashed_check = md5(partToHash.encode()).hexdigest()
 
         if checksum == hashed_check:
             marker = float(marker)
@@ -29,14 +29,6 @@ def decompose(stream, p):
 
 
 def TCP(IP: str, PORT: int):
-    file = b''
-    isHeaderReceived = False
-    accumulator = []
-    marker = [0, 0]
-    parameter = "[29,6,28,17,6,20]"
-    file_name = ""
-    packet_count = 0
-    count = 0
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as S1:
         S1.bind(("", PORT))
@@ -45,75 +37,85 @@ def TCP(IP: str, PORT: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            while True:
+            for i in range(2):
+                file = b''
+                isHeaderReceived = False
+                accumulator = []
+                marker = [0, 0]
+                parameter = "[29,6,28,17,6,20]"
+                file_name = ""
+                packet_count = 0
+                count = 0
+                while True:
+                    try:
+                        if (isHeaderReceived and count > packet_count):
+                            break
+
+                        data = connect.recv(1204)
+                        if not data:
+                            marker[1] = time()
+                            break
+
+                        if not isHeaderReceived:
+                            try:
+                                flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
+                                if (flag):
+                                    isHeaderReceived = True
+                                    print("Packet count: ", packet_count)
+                                else:
+                                    file_name = ""
+                                    packet_count = 0
+                                    marker[0] = 0
+                                    data = None
+
+                            except Exception as e:
+                                print(f"Error in decompose: {e}")
+                                continue
+                                
+                        if(isHeaderReceived):
+                            accumulator.append(data)
+                            count += 1
+                    except socket.timeout:
+                        print("Connection timed out")
+                        break
+                    except Exception as e:
+                        print(f"Error receiving data: {e}")
+                        break
+                
+            # Calculating time and average
+            if marker[1] and marker[0]:
+                timeSpent = (marker[1] - marker[0]) * 1000
+                avg = timeSpent / int(packet_count) if packet_count else 0
+                print(f"Average Time per Packet: {avg} ms")
+                print(f"Total Transmission Time: {timeSpent} ms")
+
+            print("File name: ", file_name)
+            # Merging data and writing to file
+            '''
+            for obj in accumulator:
+                file += obj
+            '''
+            file = b"".join(accumulator)
+            
+
+            print("Loaded all packets.")
+            if file_name:
                 try:
-                    if (isHeaderReceived and count == packet_count):
-                        break
-
-                    data = connect.recv(1204)
-                    if not data:
-                        marker[1] = time()
-                        break
-
-                    if not isHeaderReceived:
-                        try:
-                            flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
-                            if (flag):
-                                isHeaderReceived = True
-                                print("Packet count: ", packet_count)
-                            else:
-                                file_name = ""
-                                packet_count = 0
-                                marker[0] = 0
-                                data = None
-
-                        except Exception as e:
-                            print(f"Error in decompose: {e}")
-                            continue
-                            
-                    if(isHeaderReceived):
-                        accumulator.append(data)
-                        count += 1
-                except socket.timeout:
-                    print("Connection timed out")
-                    break
+                    with open(file_name, "wb") as fp:
+                        fp.write(file)
+                    #with open(file_name, "rb") as fp:
+                        print("Checksum: ", md5(file).hexdigest())
+                except FileNotFoundError:
+                    print(f"Error: File not found - {file_name}")
                 except Exception as e:
-                    print(f"Error receiving data: {e}")
-                    break
+                    print(f"Error writing file: {e}")
+            else:
+                print("Error: File name is None")
         
         print("Connection closed.")    
 
-        # Calculating time and average
-        if marker[1] and marker[0]:
-            timeSpent = (marker[1] - marker[0]) * 1000
-            avg = timeSpent / int(packet_count) if packet_count else 0
-            print(f"Average Time per Packet: {avg} ms")
-            print(f"Total Transmission Time: {timeSpent} ms")
-
-        print("File name: ", file_name)
-        # Merging data and writing to file
         
-        for obj in accumulator:
-            file += obj
-        '''
-        file = b"".join(accumulator)
-        '''
-
-        print("Loaded all packets.")
-        if file_name:
-            try:
-                with open(file_name, "wb") as fp:
-                    fp.write(file)
-                #with open(file_name, "rb") as fp:
-                    print("Checksum: ", md5(file).hexdigest())
-            except FileNotFoundError:
-                print(f"Error: File not found - {file_name}")
-            except Exception as e:
-                print(f"Error writing file: {e}")
-        else:
-            print("Error: File name is None")
-
-TCP("172.17.0.2", 65000)
+TCP("172.17.0.2", 65429)
 
 """ def TCP(IP:str,PORT:int):
     file = b''
