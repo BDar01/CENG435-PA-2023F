@@ -91,7 +91,7 @@ def TCP(ip: str, sender: int, receiver: int):
     packets4 = []
     # Split data into packets
     for i in range(packet_count4):
-        packets4.append(data2[i * packet_length: (i + 1) * packet_length])
+        packets4.append(data4[i * packet_length: (i + 1) * packet_length])
     header4 = createHeader(file_name4, time(), packet_count4)
 
     # large-2.obj
@@ -121,7 +121,7 @@ def TCP(ip: str, sender: int, receiver: int):
     packets6 = []
     # Split data into packets
     for i in range(packet_count6):
-        packets6.append(data2[i * packet_length: (i + 1) * packet_length])
+        packets6.append(data6[i * packet_length: (i + 1) * packet_length])
     header6 = createHeader(file_name6, time(), packet_count6)
 
     # large-3.obj
@@ -151,7 +151,7 @@ def TCP(ip: str, sender: int, receiver: int):
     packets8 = []
     # Split data into packets
     for i in range(packet_count8):
-        packets8.append(data2[i * packet_length: (i + 1) * packet_length])
+        packets8.append(data8[i * packet_length: (i + 1) * packet_length])
     header8 = createHeader(file_name8, time(), packet_count8)
 
     # large-4.obj
@@ -181,8 +181,8 @@ def TCP(ip: str, sender: int, receiver: int):
     packets10 = []
     # Split data into packets
     for i in range(packet_count10):
-        packets10.append(data2[i * packet_length: (i + 1) * packet_length])
-    header10 = createHeader(file_name4, time(), packet_count10)
+        packets10.append(data10[i * packet_length: (i + 1) * packet_length])
+    header10 = createHeader(file_name10, time(), packet_count10)
 
     # large-5.obj
     # Open and read file data
@@ -211,8 +211,8 @@ def TCP(ip: str, sender: int, receiver: int):
     packets12 = []
     # Split data into packets
     for i in range(packet_count12):
-        packets12.append(data2[i * packet_length: (i + 1) * packet_length])
-    header12 = createHeader(file_name4, time(), packet_count12)
+        packets12.append(data12[i * packet_length: (i + 1) * packet_length])
+    header12 = createHeader(file_name12, time(), packet_count12)
 
     # large-6.obj
     # Open and read file data
@@ -241,8 +241,8 @@ def TCP(ip: str, sender: int, receiver: int):
     packets14 = []
     # Split data into packets
     for i in range(packet_count14):
-        packets14.append(data2[i * packet_length: (i + 1) * packet_length])
-    header14 = createHeader(file_name4, time(), packet_count14)
+        packets14.append(data14[i * packet_length: (i + 1) * packet_length])
+    header14 = createHeader(file_name14, time(), packet_count14)
     
     # large-7.obj
     # Open and read file data
@@ -271,8 +271,8 @@ def TCP(ip: str, sender: int, receiver: int):
     packets16 = []
     # Split data into packets
     for i in range(packet_count16):
-        packets16.append(data2[i * packet_length: (i + 1) * packet_length])
-    header16 = createHeader(file_name4, time(), packet_count16)
+        packets16.append(data16[i * packet_length: (i + 1) * packet_length])
+    header16 = createHeader(file_name16, time(), packet_count16)
 
     # large-8.obj
     # Open and read file data
@@ -301,8 +301,8 @@ def TCP(ip: str, sender: int, receiver: int):
     packets18 = []
     # Split data into packets
     for i in range(packet_count18):
-        packets18.append(data2[i * packet_length: (i + 1) * packet_length])
-    header18 = createHeader(file_name4, time(), packet_count18)
+        packets18.append(data18[i * packet_length: (i + 1) * packet_length])
+    header18 = createHeader(file_name18, time(), packet_count18)
 
     # large-9.obj
     # Open and read file data
@@ -331,23 +331,16 @@ def TCP(ip: str, sender: int, receiver: int):
     packets20 = []
     # Split data into packets
     for i in range(packet_count20):
-        packets20.append(data2[i * packet_length: (i + 1) * packet_length])
-    header20 = createHeader(file_name4, time(), packet_count20)
-
+        packets20.append(data20[i * packet_length: (i + 1) * packet_length])
+    header20 = createHeader(file_name20, time(), packet_count20)
 
     # Create a socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    counter = 0
-
-    print("check")
 
     try:
         # Bind and connect the socket
         s.bind(('0.0.0.0', sender))
         s.connect((ip, receiver))
-
-        print("check2")
 
         # Send header for file_name1
         s.send(header1.encode())

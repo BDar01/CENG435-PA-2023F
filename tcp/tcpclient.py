@@ -106,9 +106,7 @@ def TCP(IP: str, PORT: int):
                 #print("Loaded all packets.")
                 if file_name:
                     try:
-                        with open(file_name, "wb") as fp:
-                            fp.write(file)
-                            print("Checksum: ", md5(file).hexdigest())
+                        print(f"Checksum {i}: ", md5(file).hexdigest())
                     except FileNotFoundError:
                         print(f"Error: File not found - {file_name}")
                     except Exception as e:
