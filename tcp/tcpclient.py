@@ -29,15 +29,6 @@ def decompose(stream, p):
         #print(f"Decompose error: {e}")  # Optionally print the exception
         return False
 
-def recvall(sock, count):
-    data = b""
-    while count:
-        packet = sock.recv(count)
-        if not packet:
-            return None
-        data += packet
-        count -= len(packet)
-    return data
 
 
 def TCP(port: int):
@@ -62,34 +53,29 @@ def TCP(port: int):
                 avg = 0
 
                 while True:
-                    try:             
-                        if isHeaderReceived:
-                            data = recvall(connect, 750, marker)
-                            if not data:
-                                marker[1] = time()
-                                break
-                            accumulator.append(data)
-                            count += 1
-
+                    try:                    
                         if not isHeaderReceived:
                             try:
                                 data = connect.recv(1024)
-                                if not data:
-                                    marker[1] = time()
-                                    break
-                                head = decompose(data, parameter)
+                                
 
+                                head = decompose(data, parameter)
                                 if (head):
                                     isHeaderReceived = True
-
                                     file_name, marker[0], packet_count, data = head
-                                    accumulator.append(data)
-                                    count+=1
                                     #print("Packet count: ", packet_count)
 
                             except Exception as e:
                                 #print(f"Error in decompose: {e}")
                                 continue
+                                
+                        if(isHeaderReceived):
+                            data
+                            if not data:
+                                marker[1] = time()
+                                break
+                            accumulator.append(data)
+                            count += 1
                             
                     except connect.timeout:
                         print("Connection timed out")
@@ -127,6 +113,7 @@ def TCP(port: int):
         
         print("Connection closed.")    
 
+        
 TCP(65429)
 
 """ def TCP(IP:str,PORT:int):

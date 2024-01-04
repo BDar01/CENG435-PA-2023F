@@ -364,7 +364,7 @@ def TCP(ip: str, sender: int, receiver: int):
     '''
 
     # List of file names
-    file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj"]#, "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
+    file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
 
     # Create a socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -373,7 +373,6 @@ def TCP(ip: str, sender: int, receiver: int):
         # Bind and connect the socket
         s.bind(('0.0.0.0', sender))
         s.connect((ip, receiver))
-        
         
         for f in file_names:
             send_file(s, f)
