@@ -1,6 +1,6 @@
 import socket
 from hashlib import sha256
-import time.time
+from time import time
 
 
 def decompose(stream, p):
