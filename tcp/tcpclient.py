@@ -34,7 +34,7 @@ def recvall(sock, count):
     while count:
         packet = sock.recv(count)
         if not packet:
-            raise EOFError("Socket closed unexpectedly")
+            return None
         data += packet
         count -= len(packet)
     return data
@@ -64,7 +64,7 @@ def TCP(port: int):
                 while True:
                     try:             
                         if isHeaderReceived:
-                            data = recvall(connect, 750)
+                            data = recvall(connect, 750, marker)
                             if not data:
                                 marker[1] = time()
                                 break
@@ -74,12 +74,14 @@ def TCP(port: int):
                         if not isHeaderReceived:
                             try:
                                 data = connect.recv(1024)
-
+                                if not data:
+                                    marker[1] = time()
+                                    break
                                 head = decompose(data, parameter)
 
                                 if (head):
                                     isHeaderReceived = True
-                                    
+
                                     file_name, marker[0], packet_count, data = head
                                     accumulator.append(data)
                                     count+=1
