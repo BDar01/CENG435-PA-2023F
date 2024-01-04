@@ -29,7 +29,7 @@ def decompose(stream, p):
 
 
 def TCP(IP: str, PORT: int):
-
+    total_time = 0
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as S1:
         S1.bind(("", PORT))
         S1.listen()
@@ -37,7 +37,7 @@ def TCP(IP: str, PORT: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            for i in range(2):
+            for i in range(20):
                 file = b''
                 isHeaderReceived = False
                 accumulator = []
@@ -47,6 +47,9 @@ def TCP(IP: str, PORT: int):
                 packet_count = 0
                 count = 0
                 data = None
+                timeSpent = 0
+                avg = 0
+
                 while True:
                     try:
                         if (isHeaderReceived and count > packet_count):
@@ -62,7 +65,7 @@ def TCP(IP: str, PORT: int):
                                 flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
                                 if (flag):
                                     isHeaderReceived = True
-                                    print("Packet count: ", packet_count)
+                                    #print("Packet count: ", packet_count)
                                 else:
                                     file_name = ""
                                     packet_count = 0
@@ -86,9 +89,10 @@ def TCP(IP: str, PORT: int):
                 # Calculating time and average
                 if marker[1] and marker[0]:
                     timeSpent = (marker[1] - marker[0]) * 1000
+                    total_time += timeSpent
                     avg = timeSpent / int(packet_count) if packet_count else 0
-                    print(f"Average Time per Packet: {avg} ms")
-                    print(f"Total Transmission Time: {timeSpent} ms")
+                    print(f"Average Time for Packet {i}: {avg} ms")
+                    print(f"Transmission Time {i}: {timeSpent} ms")
 
                 print("File name: ", file_name)
                 # Merging data and writing to file
@@ -99,7 +103,7 @@ def TCP(IP: str, PORT: int):
                 file = b"".join(accumulator)
                 
 
-                print("Loaded all packets.")
+                #print("Loaded all packets.")
                 if file_name:
                     try:
                         with open(file_name, "wb") as fp:
@@ -112,6 +116,9 @@ def TCP(IP: str, PORT: int):
                 else:
                     print("Error: File name is None")
         
+        total_avg = total_time / 20
+        print(f"Average Time for 20 Objects: {total_avg} ms")
+        print(f"Total Transmission Time: {total_time} ms")
         print("Connection closed.")    
 
         
