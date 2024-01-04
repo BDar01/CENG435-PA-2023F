@@ -15,7 +15,7 @@ def get_header(p):
         c = header[3].decode()
 
         # Calculate checksum of header
-        check = f_name + splitter + p_no + splitter + p_no + splitter
+        check = f_name + splitter + p_no + splitter + t + splitter
         hash = md5(check.encode()).hexdigest()
 
         # Compare calculated checksum with one sent in header
