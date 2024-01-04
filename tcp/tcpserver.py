@@ -9,7 +9,7 @@ file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large
 def gen_header(f_name,no,t):
     splitter = "[3-20-1-4-88-9-10]"
     # Make header
-    h = f_name + splitter + str(no) + splitter + str(t) + splitter
+    h = f_name + splitter + str(t) + splitter + str(no) + splitter
     # Find checksum of header
     c = md5(h.encode()).hexdigest()
 

@@ -10,12 +10,12 @@ def get_header(p):
     # Check header format is correct
     if (len(header) >= 4 and header[4:]):
         f_name = header[0].decode()
-        p_no = header[1].decode()
-        t = header[2].decode()
+        t = header[1].decode()
+        p_no = header[2].decode()
         c = header[3].decode()
 
         # Calculate checksum of header
-        check = f_name + splitter + p_no + splitter + t + splitter
+        check = f_name + splitter + t + splitter + p_no + splitter
         hash = md5(check.encode()).hexdigest()
 
         # Compare calculated checksum with one sent in header
@@ -24,9 +24,9 @@ def get_header(p):
             d = header[4]
             return f_name, p_no, d
         else:
-            return None
+            return False
     else:
-            return None
+            return False
 
 def receive_tcp():
     # Create and initalize server socket
