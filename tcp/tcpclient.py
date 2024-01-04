@@ -35,7 +35,7 @@ def receive_tcp():
     sock.listen(1)
 
     # For all 20 objects
-    for n in range(10):
+    for n in range(1):
         # Listen for TCP connection to accept
         conn, _ = sock.accept()
         # Receive 2 objects (large then small) at a time

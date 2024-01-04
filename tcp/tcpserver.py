@@ -40,7 +40,7 @@ def send_file(sock, f_name):
 
 def send_tcp(index):
     ip = "172.17.0.2"
-    source = 65001
+    source = 65003
     dest = 65002
 
     # List of file names
@@ -50,7 +50,7 @@ def send_tcp(index):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind socket
-    sock.bind(('0.0.0.0', source))
+    sock.bind(('0.0.0.0', source+int(index)))
     
     # Connect socket
     sock.connect((ip, dest))
@@ -65,7 +65,7 @@ def send_tcp(index):
     
 if __name__ == "__main__":
     # For 20 files:
-    for i in range(10):
+    for i in range(1):
         # Send 1 large, then 1 small object
         send_tcp(i)
         sleep(0.5)
