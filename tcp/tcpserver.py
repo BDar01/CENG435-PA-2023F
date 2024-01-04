@@ -8,17 +8,18 @@ def createHeader(file_name,marker,num_of_packets):
     return header + checksum + "[29,6,28,17,6,20]"
 
 def TCP(ip: str, sender: int, receiver: int):
-    file_name1 = "../../objects/large-0.obj"
-    file_name2 = "../../objects/small-0.obj"
+    file_name1 = "large-0.obj"
+    file_name2 = "small-0.obj"
 
     packet_length = 750  # Define the size of each packet
 
+    file_path = "../../objects/"
     # Open and read file data
-    fp1 = open(file_name1, "rb")
+    fp1 = open(file_path+file_name1, "rb")
     data1 = fp1.read()
     fp1.close()  # Close the file after reading
 
-    fp2 = open(file_name2,"rb")
+    fp2 = open(file_path+file_name2, "rb")
     data2 = fp2.read()
     fp2.close()
 
