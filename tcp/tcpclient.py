@@ -22,11 +22,11 @@ def get_header(p):
         if (c == hash):
             p_no = int(p_no)
             d = header[4]
-            return True, f_name, p_no, d
+            return f_name, p_no, d
         else:
-            return False
+            return None
     else:
-            return False
+            return None
 
 def receive_tcp():
     # Create and initalize server socket
@@ -59,9 +59,9 @@ def receive_tcp():
                 if packet:
                     if (not flag):
                         # Check header received properly
-                        head, tmp1, tmp2, tmp3 = get_header(packet)
+                        head = get_header(packet)
                         if (head):
-                            flag = True
+                            tmp1, tmp2, tmp3 = head
                             f_name = tmp1
                             p_no = tmp2
                             packet = tmp3
