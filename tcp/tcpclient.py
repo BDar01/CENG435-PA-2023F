@@ -91,7 +91,7 @@ def TCP(IP: str, PORT: int):
         print("File name: ", file_name)
         # Merging data and writing to file
         for obj in accumulator:
-            file += obj
+            file.extend(obj)
         print("Loaded all packets.")
         if file_name:
             try:
