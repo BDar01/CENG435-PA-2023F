@@ -39,7 +39,7 @@ def receive_tcp():
         # Listen for TCP connection to accept
         conn, _ = sock.accept()
         # Receive 2 objects (large then small) at a time
-        for i in range(2):
+        for i in range(1):
             f = b''
             flag = False
             d = []
@@ -62,7 +62,7 @@ def receive_tcp():
                         head = get_header(packet)
                         if (head):
                             flag = True
-                            
+
                             tmp1, tmp2, tmp3 = head
                             f_name = tmp1
                             p_no = tmp2

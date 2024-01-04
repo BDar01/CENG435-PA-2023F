@@ -7,12 +7,13 @@ from time import time, sleep
 file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
 
 def gen_header(f_name,no,t):
+    splitter = "[3-20-1-4-88-9-10]"
     # Make header
-    h = f_name + "[3-20-1-4-88-9-10]" + str(no) + "[3-20-1-4-88-9-10]" + str(t) + "[3-20-1-4-88-9-10]"
+    h = f_name + splitter + str(no) + splitter + str(t) + splitter
     # Find checksum of header
     c = md5(h.encode()).hexdigest()
 
-    return h + c + "[3-20-1-4-88-9-10]"
+    return h + c + splitter
 
 def send_file(sock, f_name):
     d_length = 750
@@ -57,7 +58,7 @@ def send_tcp(index):
     
     # Send 2 files
     send_file(sock, file_names[index])
-    send_file(sock, file_names[index+1])
+    #send_file(sock, file_names[index+1])
     
     # Close the socket
     sock.close()
