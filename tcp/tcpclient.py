@@ -36,6 +36,7 @@ def TCP(IP: str, PORT: int):
     parameter = "[29,6,28,17,6,20]"
     file_name = ""
     packet_count = 0
+    count = 0
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as S1:
         S1.bind(("", PORT))
@@ -46,6 +47,9 @@ def TCP(IP: str, PORT: int):
             print(f"Connected to {addr}")
             while True:
                 try:
+                    if (count == packet_count):
+                        break
+
                     data = connect.recv(1204)
                     if not data:
                         marker[1] = time()
@@ -66,14 +70,17 @@ def TCP(IP: str, PORT: int):
                             continue
 
                     accumulator.append(data)
+                    count += 1
                 except socket.timeout:
                     print("Connection timed out")
                     break
                 except Exception as e:
                     print(f"Error receiving data: {e}")
                     break
-
-        print("Connection closed.")
+        
+            connect.shutdown(socket.SHUT_RDWR)
+            connect.close()
+        print("Connection closed.")    
 
         # Calculating time and average
         if marker[1] and marker[0]:
@@ -82,12 +89,14 @@ def TCP(IP: str, PORT: int):
             print(f"Average Time per Packet: {avg} ms")
             print(f"Total Transmission Time: {timeSpent} ms")
 
+        printf("File name: ", file_name)
         # Merging data and writing to file
         for obj in accumulator:
             file += obj
-
+        printf("Loaded all packets.")
         if file_name:
             try:
+                printf("Checksum: ", hashlib.md5(file).hexdigest())
                 with open(file_name, "wb") as fp:
                     fp.write(file)
             except FileNotFoundError:
