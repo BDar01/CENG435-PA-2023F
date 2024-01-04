@@ -5,22 +5,25 @@ from time import time
 
 def decompose(stream, p):
     try:
-        streamList = stream.split(p.encode())
-        file_name = streamList[0].decode()
-        marker = streamList[1].decode()
-        packet_count = streamList[2].decode()
-        checksum = streamList[3].decode()
-    
-        partToHash = file_name + p + marker + p + packet_count + p
-        hashed_check = md5(partToHash.encode()).hexdigest()
+        if (len(streamList) >= 4 and streamList[4:]):
+            streamList = stream.split(p.encode())
+            file_name = streamList[0].decode()
+            marker = streamList[1].decode()
+            packet_count = streamList[2].decode()
+            checksum = streamList[3].decode()
+        
+            partToHash = file_name + p + marker + p + packet_count + p
+            hashed_check = md5(partToHash.encode()).hexdigest()
 
-        if checksum == hashed_check:
-            marker = float(marker)
-            packet_count = int(packet_count)
-            payload = streamList[4]
-            return True, file_name, marker, packet_count, payload 
+            if checksum == hashed_check:
+                marker = float(marker)
+                packet_count = int(packet_count)
+                payload = streamList[4]
+                return True, file_name, marker, packet_count, payload 
+            else:
+                return False, None, None, None, None  # Return None for each expected value
         else:
-            return False, None, None, None, None  # Return None for each expected value
+                return False, None, None, None, None  # Return None for each expected value
 
     except Exception as e:
         #print(f"Decompose error: {e}")  # Optionally print the exception
@@ -37,7 +40,7 @@ def TCP(IP: str, PORT: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            for i in range(20):
+            for i in range(8):
                 file = b''
                 isHeaderReceived = False
                 accumulator = []
