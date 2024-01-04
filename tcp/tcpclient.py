@@ -19,15 +19,15 @@ def decompose(stream, p):
                 marker = float(marker)
                 packet_count = int(packet_count)
                 payload = streamList[4]
-                return True, file_name, marker, packet_count, payload 
+                return file_name, marker, packet_count, payload 
             else:
-                return False, None, None, None, None  # Return None for each expected value
+                return False
         else:
-                return False, None, None, None, None  # Return None for each expected value
+                return False
 
     except Exception as e:
         #print(f"Decompose error: {e}")  # Optionally print the exception
-        return False, None, None, None, None  # Return None for each expected value
+        return False
 
 
 
@@ -40,7 +40,7 @@ def TCP(IP: str, PORT: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            for i in range(8):
+            for i in range(2):
                 file = b''
                 isHeaderReceived = False
                 accumulator = []
@@ -52,7 +52,6 @@ def TCP(IP: str, PORT: int):
                 data = None
                 timeSpent = 0
                 avg = 0
-                flag = False
 
                 while True:
                     try:
@@ -66,15 +65,11 @@ def TCP(IP: str, PORT: int):
 
                         if not isHeaderReceived:
                             try:
-                                flag, file_name, marker[0], packet_count, data = decompose(data, parameter)
-                                if (flag):
+                                head = decompose(data, parameter)
+                                if (head):
                                     isHeaderReceived = True
+                                    file_name, marker[0], packet_count, data = head
                                     #print("Packet count: ", packet_count)
-                                else:
-                                    file_name = ""
-                                    packet_count = 0
-                                    marker[0] = 0
-                                    data = None
 
                             except Exception as e:
                                 #print(f"Error in decompose: {e}")
@@ -83,6 +78,7 @@ def TCP(IP: str, PORT: int):
                         if(isHeaderReceived):
                             accumulator.append(data)
                             count += 1
+                            
                     except socket.timeout:
                         print("Connection timed out")
                         break
@@ -104,8 +100,7 @@ def TCP(IP: str, PORT: int):
                 for obj in accumulator:
                     file += obj
                 '''
-                file = b"".join(accumulator)
-                
+                file = b"".join(accumulator)                
 
                 #print("Loaded all packets.")
                 if file_name:
@@ -118,9 +113,6 @@ def TCP(IP: str, PORT: int):
                 else:
                     print("Error: File name is None")
         
-        total_avg = total_time / 20
-        print(f"Average Time for 20 Objects: {total_avg} ms")
-        print(f"Total Transmission Time: {total_time} ms")
         print("Connection closed.")    
 
         
