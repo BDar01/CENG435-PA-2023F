@@ -89,14 +89,14 @@ def TCP(IP: str, PORT: int):
             print(f"Average Time per Packet: {avg} ms")
             print(f"Total Transmission Time: {timeSpent} ms")
 
-        printf("File name: ", file_name)
+        print("File name: ", file_name)
         # Merging data and writing to file
         for obj in accumulator:
             file += obj
-        printf("Loaded all packets.")
+        print("Loaded all packets.")
         if file_name:
             try:
-                printf("Checksum: ", hashlib.md5(file).hexdigest())
+                print("Checksum: ", hashlib.md5(file).hexdigest())
                 with open(file_name, "wb") as fp:
                     fp.write(file)
             except FileNotFoundError:
