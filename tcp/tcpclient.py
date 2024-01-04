@@ -1,5 +1,5 @@
 import socket
-from hashlib import sha256
+from hashlib import sha256, md5
 from time import time
 
 
@@ -95,7 +95,7 @@ def TCP(IP: str, PORT: int):
         print("Loaded all packets.")
         if file_name:
             try:
-                print("Checksum: ", hashlib.md5(file).hexdigest())
+                print("Checksum: ", md5(file).hexdigest())
                 with open(file_name, "wb") as fp:
                     fp.write(file)
             except FileNotFoundError:
