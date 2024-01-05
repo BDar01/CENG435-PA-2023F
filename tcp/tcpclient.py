@@ -32,26 +32,28 @@ def get_header(p):
 def receive_tcp(conn):
     # Receive 2 objects (large then small) at a time
     for i in range(2):
-
-        while True:
-
-            ack = "Ack"
-            conn.send(ack.encode())
-            print(ack)
-            
+        packet = None
+        
+        while True:            
             # Receive packet on socket
             packet = conn.recv(1024)
             
             # If data received
             if packet:
-                break
-                           
-            print(f"Checksum {i}: ", md5(packet).hexdigest())
+                print("Received data")
+
+                ack = "Ack"
+                conn.send(ack.encode())
+                print(ack)
+
+                break         
+
+        print(f"Checksum {i}: ", md5(packet).hexdigest())
 
 if __name__ == '__main__':  
     # Create and initalize server socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(("", 65002))
+    sock.bind(("", 65000))
     sock.listen(1)
         
     # Listen for TCP connection to accept
