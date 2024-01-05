@@ -46,10 +46,10 @@ def receive_tcp(conn):
             else:
                 break               
         
-        if (d.strip(b"12345")):
-            data = d.rstrip(b"12345")
+        if (d[-1].strip(b"12345")):
+            d[-1] = d[-1].rstrip(b"12345")
             # Calculate checksum of received file
-            print(f"Checksum {f_name}: ", md5(f).hexdigest())
+            print(f"Checksum {i}: ", md5(d).hexdigest())
 
             ack = "Ack"
             conn.sendall(ack.encode())

@@ -37,13 +37,13 @@ def send_file(sock, f_name):
     '''
 
     # Send data packets
-    sock.sendall(d+end.encode())
+    sock.sendall(d+end) 
 
     # Sleep to give time to server before next send_file
 
 def send_tcp():
     ip = "172.17.0.2"
-    source = 65005
+    source = 65003
     dest = 65002
 
     # Initialize socket
