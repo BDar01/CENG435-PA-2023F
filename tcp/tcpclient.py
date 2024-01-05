@@ -34,58 +34,59 @@ def receive_tcp():
     sock.bind(("", 65002))
     sock.listen(1)
 
-    # For all 20 objects
-    for n in range(1):
-        # Listen for TCP connection to accept
-        conn, _ = sock.accept()
-        # Receive 2 objects (large then small) at a time
-        for i in range(1):
-            f = b''
-            flag = False
-            d = []
-            f_name = ""
-            p_no = 0
-            p_count = 0
+    # Listen for TCP connection to accept
+    conn, _ = sock.accept()
+    # Receive 2 objects (large then small) at a time
+    for i in range(2):
+        f = b''
+        flag = False
+        d = []
+        f_name = ""
+        p_no = 0
+        p_count = 0
 
-            while True:
-                # Break if all packets received
-                if (flag and p_count > p_no):
-                    break
-                
-                # Receive packet on socket
-                packet = conn.recv(1024)
-                
-                # If data received
-                if packet:
-                    if (not flag):
-                        # Check header received properly
-                        head = get_header(packet)
-                        if (head):
-                            flag = True
-
-                            tmp1, tmp2, tmp3 = head
-                            f_name = tmp1
-                            p_no = tmp2
-                            packet = tmp3
-
-                    # Store packets of file
-                    if (flag):
-                        d.append(packet)
-                        p_count += 1
-                else:
-                    break
-
-            f = b"".join(d)                
+        while True:
+            # Break if all packets received
+            if (flag and p_count > p_no):
+                break
             
-            # Calculate checksum of received file
-            if f_name:
-                print(f"Checksum {f_name}: ", md5(f).hexdigest())
+            # Receive packet on socket
+            packet = conn.recv(1024)
+            
+            # If data received
+            if packet:
+                if (not flag):
+                    # Check header received properly
+                    head = get_header(packet)
+                    if (head):
+                        flag = True
+
+                        tmp1, tmp2, tmp3 = head
+                        f_name = tmp1
+                        p_no = tmp2
+                        packet = tmp3
+
+                # Store packets of file
+                if (flag):
+                    d.append(packet)
+                    p_count += 1
+            else:
+                break
+
+        f = b"".join(d)                
         
-        # Close connection socket
-        conn.close()
+        # Calculate checksum of received file
+        if f_name:
+            print(f"Checksum {f_name}: ", md5(f).hexdigest())
+    
+    # Close connection socket
+    conn.close()
 
     # Close server socket
     sock.close()
 
-if __name__ == '__main__':        
-    receive_tcp()
+if __name__ == '__main__':  
+    
+    # For all 20 objects
+    for n in range(2):      
+        receive_tcp()

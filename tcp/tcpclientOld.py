@@ -40,7 +40,7 @@ def TCP(port: int):
         connect, addr = S1.accept()
         with connect:
             print(f"Connected to {addr}")
-            for i in range(2):
+            for i in range(1):
                 file = b''
                 isHeaderReceived = False
                 accumulator = []
