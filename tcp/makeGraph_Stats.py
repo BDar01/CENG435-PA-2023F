@@ -20,12 +20,13 @@ def read_times_from_file(file_name):
     min_value = min(times_list)
 
     # Append mean and confidence interval to the end of the file
+    
     with open(file_name, 'a') as file:
         file.write(f"\n\nMax: {max_value}\n")
         file.write(f"Min: {min_value}\n")
         file.write(f"Mean: {mean_value}\n")
         file.write(f"Confidence Interval: {confidence_interval}")
-
+    
     return times_list
 
 def create_plot(times_list, file_name):

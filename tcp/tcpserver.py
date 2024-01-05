@@ -18,13 +18,13 @@ def send_file(sock, f_name):
     sock.sendall(end)
 
     # Sleep to give time to server before next send_file
-    sleep(0.5)
+    #sleep(0.5)
 
 
 def send_tcp(index):
     ip = "172.17.0.2"
-    source = 65301+int(index)
-    dest = 65300+int(index)
+    source = 65001+int(index)
+    dest = 65000+int(index)
 
     # Initialize socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -57,4 +57,4 @@ if __name__ == "__main__":
     for i in range(30):
         print(f"Server No. {i} \n")
         send_tcp(i)
-        sleep(0.2)
+        sleep(0.5)
