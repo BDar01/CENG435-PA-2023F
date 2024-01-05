@@ -2,27 +2,32 @@ import socket
 from hashlib import md5
 
 def receive_tcp(conn):
-    # Receive 2 objects (large then small) at a time
+    # Receive 20 objects (large then small) at a time
     for i in range(20):
+        # Initialize data received
         d = b''
 
         while True:
             # Receive packet on socket
             packet = conn.recv(1024)
             
-            # If data received
+            # If packet received
             if packet:
+                # Append to data
                 d += packet  
+                # Check for end of file (EOF)
                 if b"123c456" in packet:
                     break
             else:
+                # Break when no packet received
                 break               
         
+        # Check if EOF marker is in data
         if (b"123c456" in d):
+            # Remove EOF marker from file
             file = d.rstrip(b"123c456")
-            # Calculate checksum of received file
-            print(f"Checksum {i}: ", md5(file).hexdigest())
             
+            # Write received files (large or small)
             if i%2 == 0:
                 f_name = "large-"+str(int(i//2))
                 print(f_name)
@@ -33,14 +38,18 @@ def receive_tcp(conn):
                 print(f_name)
                 with open(f_name, "wb") as f:
                     f.write(d)
+
+            # Calculate checksum of received file
+            print(f"Checksum: {md5(file).hexdigest()} \n")
             
+            # Send Ack message to notify server
             ack = "Ack"
             conn.sendall(ack.encode())
 
-if __name__ == '__main__':  
-    # Create and initalize server socket
+def runClient(index)
+    # Create and initalize client socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(("", 65002))
+    sock.bind(("", 65000+int(index)))
     sock.listen(1)
         
     # Listen for TCP connection to accept
@@ -50,5 +59,9 @@ if __name__ == '__main__':
     # Close connection socket
     conn.close()
     
-    # Close server socket
+    # Close client socket
     sock.close()
+
+if __name__ == "__main__":
+    for i in range(1)
+        runClient(i)
