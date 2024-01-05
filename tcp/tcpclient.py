@@ -71,21 +71,21 @@ def receive_tcp(conn):
         # Calculate checksum of received file
         if f_name:
             print(f"Checksum {f_name}: ", md5(f).hexdigest())
-    
-    # Close connection socket
-    conn.close()
-
-    # Close server socket
-    sock.close()
 
 if __name__ == '__main__':  
     # Create and initalize server socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("", 65002))
-    sock.listen()
+    sock.listen(1)
     
     # For all 20 objects
     for n in range(2): 
         # Listen for TCP connection to accept
         conn, _ = sock.accept()     
         receive_tcp(conn)
+
+        # Close connection socket
+        conn.close()
+    
+    # Close server socket
+    sock.close()

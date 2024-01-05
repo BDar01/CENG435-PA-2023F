@@ -41,7 +41,7 @@ def send_file(sock, f_name):
 
 def send_tcp(index, f_name, f_name2):
     ip = "172.17.0.2"
-    source = 65005
+    source = 65003
     dest = 65002
 
     # Initialize socket
@@ -70,4 +70,3 @@ if __name__ == "__main__":
     for i in range(2):
         # Send 1 large, then 1 small object
         send_tcp(i, file_names[i*2], file_names[i*2+1])
-        sleep(0.1)
