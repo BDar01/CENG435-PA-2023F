@@ -1,5 +1,6 @@
 import socket
 from hashlib import md5
+from time import time
 
 def receive_tcp(conn):
     # Receive 20 objects (large then small) at a time
@@ -64,5 +65,19 @@ def runClient(index):
     sock.close()
 
 if __name__ == "__main__":
+    # Take file name
+    file_name = input("Enter file name: ")
+
+    # Receive 20 objects 30 times
     for i in range(1):
+        print(f"No. {i} \n")
+        start = time()
+        # Send 20 objects
         runClient(i)
+        end = time()
+        t = (end-start)*1000
+
+    # Write time (ms) to file
+        with open(file_name, 'a') as file:
+            file.write(f"Time {i}: {t:.2f} ms\n")
+
