@@ -3,7 +3,7 @@ from time import sleep
 
 def send_file(sock, f_name):
     # Send from root dir containing "objects"
-    file_path = "objects/"
+    file_path = "../../objects/"
     
     # Get data from file
     with open(file_path + f_name, "rb") as f:

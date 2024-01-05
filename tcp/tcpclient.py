@@ -47,9 +47,10 @@ def receive_tcp(conn):
             conn.sendall(ack.encode())
 
 def runClient(index):
+    port = 65000+int(index)
     # Create and initalize client socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(("", 65000+int(index)))
+    sock.bind(("", port))
     sock.listen(1)
         
     # Listen for TCP connection to accept
