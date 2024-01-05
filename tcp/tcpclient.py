@@ -28,15 +28,7 @@ def get_header(p):
     else:
             return False
 
-def receive_tcp():
-    # Create and initalize server socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(("", 65002))
-    sock.settimeout(10)
-    sock.listen(1)
-
-    # Listen for TCP connection to accept
-    conn, _ = sock.accept()
+def receive_tcp(conn):
     # Receive 2 objects (large then small) at a time
     for i in range(2):
         f = b''
@@ -87,7 +79,13 @@ def receive_tcp():
     sock.close()
 
 if __name__ == '__main__':  
+    # Create and initalize server socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(("", 65002))
+    sock.listen()
     
     # For all 20 objects
-    for n in range(2):      
-        receive_tcp()
+    for n in range(2): 
+        # Listen for TCP connection to accept
+        conn, _ = sock.accept()     
+        receive_tcp(conn)

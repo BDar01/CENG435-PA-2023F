@@ -37,11 +37,12 @@ def send_file(sock, f_name):
         sock.sendall(packets[i])
 
     # Sleep to give time to server before next send_file
+    sleep(0.1)
 
 def send_tcp(index, f_name, f_name2):
     ip = "172.17.0.2"
-    source = 65001
-    dest = 65000
+    source = 65005
+    dest = 65002
 
     # Initialize socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -69,3 +70,4 @@ if __name__ == "__main__":
     for i in range(2):
         # Send 1 large, then 1 small object
         send_tcp(i, file_names[i*2], file_names[i*2+1])
+        sleep(0.1)
