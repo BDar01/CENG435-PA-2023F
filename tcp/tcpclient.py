@@ -52,12 +52,12 @@ def receive_tcp(conn):
             print(f"Checksum {i}: ", md5(file).hexdigest())
             
             if i%2 == 0:
-                f_name = "large-"+str(int(i/2)+1)
+                f_name = "large-"+str(int(i//2))
                 print(f_name)
                 with open(f_name, "wb") as f:
                     f.write(d)
             if i%2 == 1:
-                f_name = "small-"+str(int(i/2)+2)
+                f_name = "small-"+str(int(i//2))
                 with open(f_name, "wb") as f:
                     f.write(d)
             
