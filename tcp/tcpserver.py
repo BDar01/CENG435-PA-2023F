@@ -43,7 +43,7 @@ def send_file(sock, f_name):
 
 def send_tcp():
     ip = "172.17.0.2"
-    source = 65003
+    source = 65004
     dest = 65002
 
     # Initialize socket
@@ -63,7 +63,7 @@ def send_tcp():
         send_file(sock, file_names[i])   
         print("Sent: ", file_names[i])
 
-        time.sleep(1)
+        sleep(1)
 
         data = conn.recv(1024).decode()
         print("Ack: ", data)

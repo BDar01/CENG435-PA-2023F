@@ -46,8 +46,8 @@ def receive_tcp(conn):
             else:
                 break               
         
-        if (d[-1].strip(b"x\12345")):
-            d[-1] = d[-1].rstrip(b"12345")
+        if (b"x\12345" in d[-1]):
+            d[-1] = int(str(d[-1]).rstrip(b"x\12345"))
             # Calculate checksum of received file
             print(f"Checksum {i}: ", md5(d).hexdigest())
 
