@@ -77,6 +77,7 @@ if __name__ == "__main__":
         runClient(i)
         end = time()
         t = end-start
+        print(f"Time: {t}s")
         total_times.append(t)
 
     # Write time (s) to file

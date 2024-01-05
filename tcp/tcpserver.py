@@ -23,7 +23,7 @@ def send_file(sock, f_name):
 
 def send_tcp(index):
     ip = "172.17.0.2"
-    source = 65001+int(index)
+    source = 65002+int(index)
     dest = 65000+int(index)
 
     # Initialize socket
