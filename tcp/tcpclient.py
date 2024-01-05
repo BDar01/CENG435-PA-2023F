@@ -29,13 +29,13 @@ def receive_tcp(conn):
             file = d.rstrip(b"123c456")
             
             # Write received files (large or small)
-            if i%2 == 0:
-                f_name = "large-"+str(int(i//2))
+            #if i%2 == 0:
+                #f_name = "large-"+str(int(i//2))
                 #print(f_name)
                 #with open(f_name, "wb") as f:
                     #f.write(d)
-            if i%2 == 1:
-                f_name = "small-"+str(int(i//2))
+            #if i%2 == 1:
+                #f_name = "small-"+str(int(i//2))
                 #print(f_name)
                 #with open(f_name, "wb") as f:
                     #f.write(d)
@@ -48,7 +48,7 @@ def receive_tcp(conn):
             conn.sendall(ack.encode())
 
 def runClient(index):
-    port = 65000+int(index)
+    port = 65300+int(index)
     # Create and initalize client socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("", port))
@@ -83,5 +83,5 @@ if __name__ == "__main__":
     # Write time (s) to file
     for i in range(30):
         with open(file_name, 'a') as file:
-            file.write(f"Time {i}: {total_times[i]:.2f} s\n")
+            file.write(f"Time {i}: {total_times[i]:.5f} s\n")
 
