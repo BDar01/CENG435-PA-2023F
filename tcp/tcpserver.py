@@ -20,7 +20,7 @@ def send_file(sock, f_name):
     with open(file_path + f_name, "rb") as f:
         d = f.read()
 
-    end = "123"
+    end = b"12345"
 
     '''
     # Find no. of packets
@@ -37,13 +37,13 @@ def send_file(sock, f_name):
     '''
 
     # Send data packets
-    sock.sendall(d.encode()+end.encode())
+    sock.sendall(d+end.encode())
 
     # Sleep to give time to server before next send_file
 
 def send_tcp():
     ip = "172.17.0.2"
-    source = 65004
+    source = 65005
     dest = 65002
 
     # Initialize socket
