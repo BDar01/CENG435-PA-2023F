@@ -70,6 +70,7 @@ if __name__ == "__main__":
 
     # Receive 20 objects 30 times
     for i in range(30):
+        print(f"Client No. {i} \n")
         start = time()
         # Send 20 objects
         runClient(i)

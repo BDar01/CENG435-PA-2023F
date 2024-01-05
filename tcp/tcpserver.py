@@ -55,6 +55,6 @@ def send_tcp(index):
 if __name__ == "__main__":
     # Send 20 objects 30 times
     for i in range(30):
-        #print(f"No. {i} \n")
+        print(f"Server No. {i} \n")
         send_tcp(i)
         sleep(0.5)
