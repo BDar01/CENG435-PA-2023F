@@ -41,8 +41,8 @@ def send_file(sock, f_name):
 
 def send_tcp(index, f_name, f_name2):
     ip = "172.17.0.2"
-    source = 65003
-    dest = 65002
+    source = 65001
+    dest = 65000
 
     # Initialize socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -53,20 +53,16 @@ def send_tcp(index, f_name, f_name2):
     # Connect socket
     sock.connect((ip, dest))
     
-    # Send 2 files
-    send_file(sock, f_name)
-    print(f_name)
-    send_file(sock, f_name2)
-    print(f_name2)
+    # For 20 files:
+    file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
+
+    for i in range(2):
+        # Send 1 large, then 1 small object
+        send_file(sock, file_names[i]) 
 
     # Close the socket
     sock.close()
        
     
 if __name__ == "__main__":
-    # For 20 files:
-    file_names = ["large-0.obj", "small-0.obj", "large-1.obj", "small-1.obj", "large-2.obj", "small-2.obj", "large-3.obj", "small-3.obj", "large-4.obj", "small-4.obj", "large-5.obj", "small-5.obj", "large-6.obj", "small-6.obj", "large-7.obj", "small-7.obj", "large-8.obj", "small-8.obj", "large-9.obj", "small-9.obj"]
-
-    for i in range(2):
-        # Send 1 large, then 1 small object
-        send_tcp(i, file_names[i*2], file_names[i*2+1])
+    send_tcp()

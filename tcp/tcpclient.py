@@ -72,20 +72,20 @@ def receive_tcp(conn):
         if f_name:
             print(f"Checksum {f_name}: ", md5(f).hexdigest())
 
+        time.sleep(0.1)
+
 if __name__ == '__main__':  
     # Create and initalize server socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("", 65002))
     sock.listen(1)
-    
-    # For all 20 objects
-    for n in range(2): 
-        # Listen for TCP connection to accept
-        conn, _ = sock.accept()     
-        receive_tcp(conn)
+        
+    # Listen for TCP connection to accept
+    conn, _ = sock.accept()     
+    receive_tcp(conn)
 
-        # Close connection socket
-        conn.close()
+    # Close connection socket
+    conn.close()
     
     # Close server socket
     sock.close()
