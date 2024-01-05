@@ -37,7 +37,7 @@ def create_plot(times_list, file_name):
     ax.set_xlabel("Run")
     ax.set_ylabel("Time (s)")
     ax.legend()
-    ax.set_title("TCP with 100ms Delay (Uniform Dist.)")
+    ax.set_title("Updated TCP Packet Duplication of 5%")
     fig.savefig(f"{file_name}_figure.png")
 
 def main():

@@ -3,7 +3,7 @@ from time import sleep
 
 def send_file(sock, f_name):
     # Send from root dir containing "objects"
-    file_path = "../../objects/"
+    file_path = "objects/"
     
     # Get data from file
     with open(file_path + f_name, "rb") as f:
@@ -16,9 +16,6 @@ def send_file(sock, f_name):
     sock.sendall(d) 
     # Append end to file to inform server
     sock.sendall(end)
-
-    # Sleep to give time to server before next send_file
-    #sleep(0.5)
 
 
 def send_tcp(index):
