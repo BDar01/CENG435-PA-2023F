@@ -17,9 +17,9 @@ def send_file(sock, f_name):
     file_path = "../../objects/"
     
     # Get data from file
-    with open(file_path + f_name, "r") as f:
+    with open(file_path + f_name, "rb") as f:
         d = f.read()
-    '''
+
     # Find no. of packets
     p_no = ceil(len(d) / d_length)
 
@@ -35,14 +35,11 @@ def send_file(sock, f_name):
     # Send data packets
     for i in range(p_no):
         sock.sendall(packets[i])
-    '''
-
-    sock.sendall(d.decode())
 
     # Sleep to give time to server before next send_file
-    sleep(1)
+    sleep(0.5)
 
-def send_tcp():
+def send_tcp(index, f_name, f_name2):
     ip = "172.17.0.2"
     source = 65001
     dest = 65000
@@ -51,7 +48,7 @@ def send_tcp():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind socket
-    sock.bind(('0.0.0.0', source))
+    sock.bind(('0.0.0.0', source+int(index)))
     
     # Connect socket
     sock.connect((ip, dest))
@@ -61,14 +58,12 @@ def send_tcp():
 
     for i in range(2):
         # Send 1 large, then 1 small object
-        send_file(sock, file_names[i]) 
-        print(file_names[i])
-
-        data = sock.recv(1024)
-        print("Received data")
-        if (data.decode() == "ack"):
-            print(data.decode())
-
+        send_file(file_names[i]) 
+        while True:    
+            data = conn.recv(1024).decode()
+            if (data == "Ack"):
+                break
+        
 
     # Close the socket
     sock.close()
