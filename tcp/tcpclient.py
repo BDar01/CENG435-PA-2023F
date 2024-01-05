@@ -50,16 +50,18 @@ def receive_tcp(conn):
             file = d.rstrip(b"123c456")
             # Calculate checksum of received file
             print(f"Checksum {i}: ", md5(file).hexdigest())
-            '''
+            
             if i%2 == 0:
                 f_name = "large-"+str(i)
+                print(f_name)
                 with open(f_name, "wb") as f:
                     f.write(d)
             if i%2 == 1:
-                f_name = "small-"+str(i)
+                f_name = "small-"+str(i-1)
+                print(f_name)
                 with open(f_name, "wb") as f:
                     f.write(d)
-            '''
+            
             ack = "Ack"
             conn.sendall(ack.encode())
 
