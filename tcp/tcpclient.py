@@ -1,7 +1,7 @@
 import socket
 from hashlib import md5
 
-
+'''
 def get_header(p):
     # Use splitter value of sender to get header values
     splitter = "[3-20-1-4-88-9-10]"
@@ -27,53 +27,33 @@ def get_header(p):
             return False
     else:
             return False
+'''
 
 def receive_tcp(conn):
     # Receive 2 objects (large then small) at a time
     for i in range(2):
-        f = b''
-        flag = False
         d = []
-        f_name = ""
-        p_no = 0
-        p_count = 0
 
         while True:
-            # Break if all packets received
-            if (flag and p_count > p_no):
-                break
-            
             # Receive packet on socket
             packet = conn.recv(1024)
             
             # If data received
             if packet:
-                if (not flag):
-                    # Check header received properly
-                    head = get_header(packet)
-                    if (head):
-                        flag = True
-
-                        tmp1, tmp2, tmp3 = head
-                        f_name = tmp1
-                        p_no = tmp2
-                        packet = tmp3
-
-                # Store packets of file
-                if (flag):
-                    d.append(packet)
-                    p_count += 1
+                d += packet  
+                if "123" in packet.decode():
+                    break
             else:
-                break
-
-        f = b"".join(d)                
+                break               
         
-        # Calculate checksum of received file
-        if f_name:
+        data = d.decode()
+        if (data.strip("123")):
+            f = data.rstrip("123")
+            # Calculate checksum of received file
             print(f"Checksum {f_name}: ", md5(f).hexdigest())
 
-        ack = "Ack"
-        conn.send(ack.encode())
+            ack = "Ack"
+            conn.sendall(ack.encode())
 
 if __name__ == '__main__':  
     # Create and initalize server socket
