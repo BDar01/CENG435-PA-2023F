@@ -46,7 +46,7 @@ def receive_tcp(conn):
             ack = "Ack"
             conn.sendall(ack.encode())
 
-def runClient(index)
+def runClient(index):
     # Create and initalize client socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("", 65000+int(index)))
@@ -63,5 +63,5 @@ def runClient(index)
     sock.close()
 
 if __name__ == "__main__":
-    for i in range(1)
+    for i in range(1):
         runClient(i)
