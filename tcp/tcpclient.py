@@ -31,7 +31,7 @@ def get_header(p):
 
 def receive_tcp(conn):
     # Receive 2 objects (large then small) at a time
-    for i in range(2):
+    for i in range(8):
         d = b''
 
         while True:
@@ -41,16 +41,25 @@ def receive_tcp(conn):
             # If data received
             if packet:
                 d += packet  
-                if b"\x00" in packet:
+                if b"123c456" in packet:
                     break
             else:
                 break               
         
-        if (b"\x00" in d):
-            file = d.rstrip(b"\x00")
+        if (b"123c456" in d):
+            file = d.rstrip(b"123c456")
             # Calculate checksum of received file
             print(f"Checksum {i}: ", md5(file).hexdigest())
-
+            '''
+            if i%2 == 0:
+                f_name = "large-"+str(i)
+                with open(f_name, "wb") as f:
+                    f.write(d)
+            if i%2 == 1:
+                f_name = "small-"+str(i)
+                with open(f_name, "wb") as f:
+                    f.write(d)
+            '''
             ack = "Ack"
             conn.sendall(ack.encode())
 
