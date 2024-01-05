@@ -20,7 +20,7 @@ def send_file(sock, f_name):
     with open(file_path + f_name, "rb") as f:
         d = f.read()
 
-    end = b"12345"
+    end = b"x\12345"
 
     '''
     # Find no. of packets

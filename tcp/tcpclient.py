@@ -41,12 +41,12 @@ def receive_tcp(conn):
             # If data received
             if packet:
                 d += packet  
-                if b"123" in packet:
+                if b"x\12345" in packet:
                     break
             else:
                 break               
         
-        if (d[-1].strip(b"12345")):
+        if (d[-1].strip(b"x\12345")):
             d[-1] = d[-1].rstrip(b"12345")
             # Calculate checksum of received file
             print(f"Checksum {i}: ", md5(d).hexdigest())
