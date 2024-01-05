@@ -69,15 +69,15 @@ if __name__ == "__main__":
     file_name = input("Enter file name: ")
 
     # Receive 20 objects 30 times
-    for i in range(1):
+    for i in range(2):
         print(f"No. {i} \n")
         start = time()
         # Send 20 objects
         runClient(i)
         end = time()
-        t = (end-start)*1000
+        t = end-start
 
-    # Write time (ms) to file
+    # Write time (s) to file
         with open(file_name, 'a') as file:
-            file.write(f"Time {i}: {t:.2f} ms\n")
+            file.write(f"Time {i}: {t:.2f} s\n")
 
