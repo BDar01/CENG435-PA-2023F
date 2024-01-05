@@ -32,13 +32,13 @@ def receive_tcp(conn):
             if i%2 == 0:
                 f_name = "large-"+str(int(i//2))
                 #print(f_name)
-                with open(f_name, "wb") as f:
-                    f.write(d)
+                #with open(f_name, "wb") as f:
+                    #f.write(d)
             if i%2 == 1:
                 f_name = "small-"+str(int(i//2))
                 #print(f_name)
-                with open(f_name, "wb") as f:
-                    f.write(d)
+                #with open(f_name, "wb") as f:
+                    #f.write(d)
 
             # Calculate checksum of received file
             #print(f"Checksum: {md5(file).hexdigest()} \n")
@@ -65,6 +65,7 @@ def runClient(index):
     sock.close()
 
 if __name__ == "__main__":
+    total_times = []
     # Take file name
     file_name = input("Enter file name: ")
 
@@ -76,8 +77,10 @@ if __name__ == "__main__":
         runClient(i)
         end = time()
         t = end-start
+        total_times.append(t)
 
     # Write time (s) to file
+    for i in range(30):
         with open(file_name, 'a') as file:
-            file.write(f"Time {i}: {t:.2f} s\n")
+            file.write(f"Time {i}: {total_times[i]:.2f} s\n")
 
