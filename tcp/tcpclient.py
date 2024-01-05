@@ -32,6 +32,7 @@ def receive_tcp():
     # Create and initalize server socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("", 65002))
+    sock.settimeout(10)
     sock.listen(1)
 
     # Listen for TCP connection to accept
