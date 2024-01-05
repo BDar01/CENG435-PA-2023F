@@ -41,11 +41,11 @@ def send_tcp(index):
     for i in range(20):
         # Send each file
         send_file(sock, file_names[i])   
-        print("Sent: ", file_names[i])
+        #print("Sent: ", file_names[i])
 
         # Get Ack message from client
         data = sock.recv(1024).decode()
-        print("Ack: ", data)
+        #print("Ack: ", data)
         
 
     # Close the socket
@@ -54,7 +54,7 @@ def send_tcp(index):
     
 if __name__ == "__main__":
     # Send 20 objects 30 times
-    for i in range(2):
-        print(f"No. {i} \n")
+    for i in range(30):
+        #print(f"No. {i} \n")
         send_tcp(i)
-        time.sleep(0.1)
+        sleep(0.5)

@@ -31,17 +31,17 @@ def receive_tcp(conn):
             # Write received files (large or small)
             if i%2 == 0:
                 f_name = "large-"+str(int(i//2))
-                print(f_name)
+                #print(f_name)
                 with open(f_name, "wb") as f:
                     f.write(d)
             if i%2 == 1:
                 f_name = "small-"+str(int(i//2))
-                print(f_name)
+                #print(f_name)
                 with open(f_name, "wb") as f:
                     f.write(d)
 
             # Calculate checksum of received file
-            print(f"Checksum: {md5(file).hexdigest()} \n")
+            #print(f"Checksum: {md5(file).hexdigest()} \n")
             
             # Send Ack message to notify server
             ack = "Ack"
@@ -69,8 +69,7 @@ if __name__ == "__main__":
     file_name = input("Enter file name: ")
 
     # Receive 20 objects 30 times
-    for i in range(2):
-        print(f"No. {i} \n")
+    for i in range(30):
         start = time()
         # Send 20 objects
         runClient(i)
